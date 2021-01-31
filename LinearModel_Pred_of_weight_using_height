@@ -1,0 +1,74 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sun Jan 31 14:40:27 2021
+Created by Kedar Badrinath Pathade
+Topic - Weight Prediction using given Height of a person(male)
+@author: DELL
+"""
+
+#Objective - To predict weight of a person when we know the height of the person(male)
+#we are using the data from the public website - https://www.kaggle.com/mustafaali96/weight-height
+
+------------------------------------------------------------------------------------------------------------------
+
+#we first imported the data and created the dataframe of the data which we will use for our task
+
+#we are importing the pandas library for creating the dataframe  
+import pandas as pd
+
+#Here we have created a dataframe from the data
+#Give the location where the dataset is stored in next line
+dataset = pd.read_excel("weight-height.xlsx")
+print(type(dataset))
+print(dataset)
+
+#Now create the two arrays of weight and height and store them in two variables
+x = dataset.iloc[ : , :-1].values
+y = dataset.iloc[ : , [1]].values
+
+#x is height and y is weight 
+print(type(x))
+print(type(y))
+
+#here we are importint the function which splits the data into two parts named as train and test
+#we are using the sklearn library and model_selection module for importing the data
+#we are giving random_state value to 1, for having better accuracy of ur model
+from sklearn.model_selection import train_test_split
+xtrain, xtest, ytrain, ytest = train_test_split(x, y, test_size = 1/5, random_state=1)
+
+#here we are importing the LinearRegression function from sklearn library and linear_model module
+#then we are using it for traning the data
+from sklearn.linear_model import LinearRegression
+function = LinearRegression()
+
+function.fit(xtrain , ytrain)
+
+#function.coef_ gives the values of coefficient and fucnction.intercept_ gives intercept value
+print(function.coef_)
+slope = function.coef_
+print(slope)
+
+print(function.intercept_)
+intercept = function.intercept_
+print(intercept)
+
+#fuunction.predict() predicts the respective value of y for given values of x which are present in xtest
+ypred = function.predict(xtest)
+print(ypred)
+print(ytest)
+
+#we are using r2_score function for calculationg the accuarcy of linear model
+from sklearn.metrics import r2_score
+r2_score( ytest, ypred)
+
+#here, we are ploting the graph x-y for height-weight predicted
+import matplotlib.pyplot as plt
+print = plt.plot(xtest, ytest)
+print1 = plt.plot(xtest, ypred)
+
+#now we can write the solution as y = mx + c
+answer = slope*xtest + intercept
+
+--------------------------------------------------------------------------------------------------------------------
+
+
